@@ -1,0 +1,59 @@
+function funnel($fnnl)
+{
+	global $conn;
+	$pk = $fnnl['pk'];
+	$buy1 = $fnnl['buy1'];
+	$buy2 = $fnnl['buy2'];
+	$buy3 = $fnnl['buy3'];
+	$buy4 = $fnnl['buy4'];
+	$buy5 = $fnnl['buy5'];
+	$buy6 = $fnnl['buy6'];
+
+
+	$status1 = $fnnl['status1'];
+	$harga_po = $fnnl['harga_po'];
+	$status = $fnnl['status'];
+	if ($buy6 == '100%') {
+		// $status = 'Cold';
+		$buy = '100%';
+		$gambar = upload();
+		if (!$gambar) {
+			return false;
+		}
+	} elseif ($buy5 == '90%') {
+		// $status = 'On Progress';
+		$gambar = '';
+		$buy = '90%';
+	} elseif ($buy4 == '85%') {
+		// $status = 'On Progress';
+		$gambar = '';
+		$buy = '85%';
+	} elseif ($buy3 == '70%') {
+		// $status = 'Hot';
+		$gambar = '';
+
+		$buy = '70%';
+	} elseif ($buy2 == '50%') {
+		// $status = 'Hold';
+		$gambar = '';
+		$buy = '50%';
+	} elseif ($buy1 == '30%') {
+		// $status = 'PO';
+		$gambar = '';
+		$buy = '30%';
+	}
+
+	$query = "UPDATE sales_funnel SET 
+				buy_funnel = '$buy',
+				status_funnel = '$status',
+				status2_funnel = '$status1',
+				gambar = '$gambar',
+				buy1 = '$buy1',
+				buy2 = '$buy2',
+				buy3 = '$buy3',
+				buy4 = '$buy4',
+				buy5 = '$buy5',
+				buy6 = '$buy6'
+				WHERE pk = '$pk'
+	";
+	mysqli_query($conn, $query);

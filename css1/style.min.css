@@ -1,0 +1,104 @@
+.carousel,.carousel .carousel-inner,.carousel .carousel-inner .active,.carousel .carousel-inner .carousel-item,.view,body,html{height:100%}.navbar{background-color:rgba(0,0,0,.2)}.page-footer,.top-nav-collapse{background-color:#1C2331}@media only screen and (max-width:768px){.navbar{background-color:#1C2331}}
+
+
+
+.pr1{
+  padding-top:70px;
+}
+
+
+.dataTables_filter{
+	float: right;
+}
+
+.paging_simple_numbers{
+	float: right;
+}
+
+.active{
+      background-color:#2e3951;
+      color:#fff;
+
+}
+
+/* Navigation*/
+    .navbar {
+      background-color: transparent;
+    }
+    .scrolling-navbar {
+      transition: background .5s ease-in-out, padding .5s ease-in-out;
+    }
+    .top-nav-collapse {
+      background-color: #667490;
+    }
+    footer.page-footer {
+      background-color: #667490;
+    }
+    @media only screen and (max-width: 768px) {
+      .navbar {
+        background-color: #667490;
+      }
+    }
+
+    /* Necessary for full page carousel*/
+    html,
+    body,
+    .view {
+      height: 100%;
+    }
+
+    /* Carousel*/
+    .carousel,
+    .carousel-item,
+    .carousel-item.active {
+      height: 100%;
+    }
+    .carousel-inner {
+      height: 100%;
+    }
+    .carousel-item:nth-child(1) {
+      background-image: url("../image/pt3(1).jpg");
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center center;
+    }
+    .carousel-item:nth-child(2) {
+      background-image: url("../image/pt1(1).png");
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center center;
+    }
+    .carousel-item:nth-child(3) {
+      background-image: url("../image/pt2(1).jpg");
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center center;
+    }
+
+.top-nav-collapse {
+    background-color: 
+    #252e41;
+}
+
+
+.carousel, .carousel-item, .carousel-item.active {
+    height: 83%;
+}
+
+.modal-dialog {
+    max-width: 65%;
+    margin: 1.75rem auto;
+}
+
+.warna1, .warna1::after {
+    background-color: 
+    rgba(29, 42, 60, 0.61);
+}
+
+.card-body1 {
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    padding: 1.25rem;
+    height: 247px;
+}
+

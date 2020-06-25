@@ -1,0 +1,1203 @@
+<?php
+
+require 'koneksi/koneksi.php';
+
+
+function query($query)
+{
+	global $conn;
+	$hasil = mysqli_query($conn, $query);
+	$rows1 = [];
+	while ($row2 = mysqli_fetch_assoc($hasil)) {
+		$rows1[] = $row2;
+	}
+	return $rows1;
+}
+
+
+
+function rupiah($angka)
+{
+
+	$hasil_rupiah = "Rp " . number_format($angka, 0, ',', '.');
+	return $hasil_rupiah;
+}
+
+function kunjunganharian($post_kunjungan)
+{
+	global $conn;
+
+
+	$q = mysqli_query($conn, 'SELECT MAX(pk_kunjungan) as user_id from sales_kunjungan');
+	$row = mysqli_fetch_assoc($q);
+	$ai = $row['user_id'] + 1;
+
+	$z = mysqli_query($conn, 'SELECT MAX(pk_cust) as user_idcust from sales_customer');
+	$rowz = mysqli_fetch_assoc($z);
+	$aiz = $rowz['user_idcust'] + 1;
+
+	$nama_kunjungan1 = $post_kunjungan['nama_kunjungan'];
+	$nama_kunjungan2 = $post_kunjungan['nama_kunjungan2'];
+	$nama_kunjungan3 = $post_kunjungan['nama_kunjungan3'];
+	$nama_kunjungan = $nama_kunjungan1 . ' ' . $nama_kunjungan2 . ' ' . $nama_kunjungan3;
+
+	$hp_kunjungan1 = $post_kunjungan['hp_kunjungan'];
+	$hp_kunjungan2 = $post_kunjungan['hp_kunjungan2'];
+	$hp_kunjungan3 = $post_kunjungan['hp_kunjungan3'];
+	$hp_kunjungan = $hp_kunjungan1 . ' ' . $hp_kunjungan2 . ' ' . $hp_kunjungan3;
+
+	$email_kunjungan = $post_kunjungan['email_kunjungan'];
+	$jabatan_kunjungan = $post_kunjungan['jabatan_kunjungan'];
+	$koders_kunjungan = $post_kunjungan['koders_kunjungan'];
+	$rs_kunjungan = $post_kunjungan['rs_kunjungan'];
+	$alamat_kunjungan = $post_kunjungan['alamat_kunjungan'];
+	$tlp_kunjungan = $post_kunjungan['tlp_kunjungan'];
+	$kota_kunjungan = $post_kunjungan['kota_kunjungan'];
+	$negara_kunjungan = $post_kunjungan['negara_kunjungan'];
+	$pos_kunjungan = $post_kunjungan['pos_kunjungan'];
+	$req_kunjungan = $post_kunjungan['req_kunjungan'];
+	$date_kunjungan = $post_kunjungan['date_kunjungan'];
+	$username = $post_kunjungan['username'];
+	// $now_kunjungan = Date('d-m-Y');
+
+	$query = "INSERT INTO sales_kunjungan (pk_kunjungan, nama_kunjungan, hp_kunjungan, email_kunjungan, jabatan_kunjungan, koders_kunjungan, rs_kunjungan, alamat_kunjungan, tlp_kunjungan, kota_kunjungan, negara_kunjungan, pos_kunjungan, req_kunjungan, date_kunjungan, now_kunjungan, username) 
+		VALUES ('$ai','$nama_kunjungan','$hp_kunjungan', '$email_kunjungan','$jabatan_kunjungan', '$koders_kunjungan', '$rs_kunjungan','$alamat_kunjungan','$tlp_kunjungan','$kota_kunjungan','$negara_kunjungan','$pos_kunjungan','$req_kunjungan','$date_kunjungan',NOW(),'$username')";
+
+	mysqli_query($conn, $query);
+
+	$query1 = "INSERT INTO sales_customer (pk_cust, koders_cust, nama_cust, hp_cust, email_cust, jabatan_cust, rs_cust, alamat_cust, tlp_cust, kota_cust, negara_cust, pos_cust, now_cust, username) 
+		VALUES ('$aiz', '$koders_kunjungan', '$nama_kunjungan','$hp_kunjungan', '$email_kunjungan','$jabatan_kunjungan','$rs_kunjungan','$alamat_kunjungan','$tlp_kunjungan','$kota_kunjungan','$negara_kunjungan','$pos_kunjungan',NOW(),'$username')";
+
+	mysqli_query($conn, $query1);
+
+	return mysqli_affected_rows($conn);
+}
+
+function tambahcust($tambahcustomer)
+{
+	global $conn;
+
+	$q = mysqli_query($conn, 'SELECT MAX(pk_cust) as user_id from sales_customer');
+	$row = mysqli_fetch_assoc($q);
+	$ai = $row['user_id'] + 1;
+
+	$nama_cust = $tambahcustomer['nama_cust'];
+	$hp_cust = $tambahcustomer['hp_cust'];
+	$email_cust = $tambahcustomer['email_cust'];
+	$jabatan_cust = $tambahcustomer['jabatan_cust'];
+	$rs_cust = $tambahcustomer['rs_cust'];
+	$alamat_cust = $tambahcustomer['alamat_cust'];
+	$tlp_cust = $tambahcustomer['tlp_cust'];
+	$kota_cust = $tambahcustomer['kota_cust'];
+	$negara_cust = $tambahcustomer['negara_cust'];
+	// $pos_cust = $tambahcustomer['pos_cust'];
+	$koders_cust = $tambahcustomer['koders_cust'];
+	$username = $tambahcustomer['username'];
+
+	$query = "INSERT INTO sales_customer(pk_cust, koders_cust, nama_cust, 
+	hp_cust, email_cust, jabatan_cust, rs_cust, alamat_cust, tlp_cust, kota_cust,negara_cust,now_cust, username) 
+	VALUES ('$ai', '$koders_cust','$nama_cust','$hp_cust','$email_cust',
+	'$jabatan_cust','$rs_cust','$alamat_cust','$tlp_cust',
+	'$kota_cust','$negara_cust',NOW(),'$username')";
+
+	mysqli_query($conn, $query);
+
+	// var_dump($tambahcustomer);
+
+	return mysqli_affected_rows($conn);
+}
+
+function editcust($editcustomer)
+{
+
+	global $conn;
+
+	$q = mysqli_query($conn, 'SELECT MAX(pk_cust) as user_id from sales_customer');
+	$row = mysqli_fetch_assoc($q);
+
+
+	$id = $editcustomer['pk_cust'];
+	$nama_cust = $editcustomer['nama_cust'];
+	$hp_cust = $editcustomer['hp_cust'];
+	$email_cust = $editcustomer['email_cust'];
+	$jabatan_cust = $editcustomer['jabatan_cust'];
+	$rs_cust = $editcustomer['rs_cust'];
+	$alamat_cust = $editcustomer['alamat_cust'];
+	$tlp_cust = $editcustomer['tlp_cust'];
+	$kota_cust = $editcustomer['kota_cust'];
+	$negara_cust = $editcustomer['negara_cust'];
+	$pos_cust = $editcustomer['pos_cust'];
+	$koders_cust = $editcustomer['koders_cust'];
+	$username = $editcustomer['username'];
+	$npwp_cust = $editcustomer['npwp_cust'];
+
+	$query = "UPDATE sales_customer SET
+				nama_cust = '$nama_cust',
+				hp_cust = '$hp_cust',
+				email_cust = '$email_cust',
+				jabatan_cust = '$jabatan_cust',
+				rs_cust = '$rs_cust',
+				alamat_cust = '$alamat_cust',
+				tlp_cust = '$tlp_cust',
+				kota_cust = '$kota_cust',
+				negara_cust = '$negara_cust',
+				now_cust = NOW(),
+				koders_cust = '$koders_cust',
+				npwp_cust = '$npwp_cust',
+				username = '$username'
+				WHERE pk_cust = $id
+				";
+
+
+	mysqli_query($conn, $query);
+
+	return mysqli_affected_rows($conn);
+}
+
+function tambahmod($tambahmodality)
+{
+	global $conn;
+
+	$q = mysqli_query($conn, 'SELECT MAX(pk_mod) as user_id from sales_modality');
+	$row = mysqli_fetch_assoc($q);
+	$ai = $row['user_id'] + 1;
+
+	$nama_mod = $tambahmodality['nama_mod'];
+	$merk_mod = $tambahmodality['merk_mod'];
+	$model_mod = $tambahmodality['model_mod'];
+	$spek_mod = $tambahmodality['spek_mod'];
+	$harga_mod = $tambahmodality['harga_mod'];
+	$username = $tambahmodality['username'];
+	$stock_mod = $tambahmodality['stock_mod'];
+
+	$query = "INSERT INTO sales_modality(pk_mod, nama_mod, merk_mod, model_mod, spek_mod, harga_mod, now_mod, stock_mod, username) VALUES ('$ai','$nama_mod','$merk_mod','$model_mod','$spek_mod','$harga_mod',NOW(), '$stock_mod', '$username')";
+	mysqli_query($conn, $query);
+
+	return mysqli_affected_rows($conn);
+}
+
+function editmod($editmodality)
+{
+	global $conn;
+
+	$q = mysqli_query($conn, 'SELECT MAX(pk_mod) as user_id from sales_modality');
+	$row = mysqli_fetch_assoc($q);
+	$ai = $row['user_id'] + 1;
+
+	$id = $editmodality['pk_mod'];
+	$nama_mod = $editmodality['nama_mod'];
+	$merk_mod = $editmodality['merk_mod'];
+	$model_mod = $editmodality['model_mod'];
+	$spek_mod = $editmodality['spek_mod'];
+	$harga_mod = $editmodality['harga_mod'];
+	$username = $editmodality['username'];
+	$stock_mod = $editmodality['stock_mod'];
+
+	$query = "UPDATE sales_modality SET
+				nama_mod = '$nama_mod',
+				merk_mod = '$merk_mod',
+				model_mod = '$model_mod',
+				spek_mod = '$spek_mod',
+				harga_mod = '$harga_mod',
+				now_mod = NOW(),
+				stock_mod = '$stock_mod'
+				WHERE pk_mod = $id
+				";
+	mysqli_query($conn, $query);
+
+	return mysqli_affected_rows($conn);
+}
+
+function penawaran($pnwrn)
+{
+	global $conn;
+
+
+
+
+	// $harga_penawaran = $pnwrn['harga_penawaran'];
+	// $qty = $pnwrn['qty'];
+	$budget = $pnwrn['budget_funnel'];
+
+
+
+	$array_bln = array(1 => "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII");
+	$bln = $array_bln[Date('n')];
+
+
+
+
+	$thn = Date('Y');
+
+
+	$pk_kunjungan = $pnwrn['pk_kunjungan'];
+	$kunjungan = mysqli_query($conn, "SELECT * FROM sales_kunjungan WHERE pk_kunjungan = '$pk_kunjungan' ");
+	$row_kunj = mysqli_fetch_assoc($kunjungan);
+	$nama_kunjungan_penawaran = $row_kunj['nama_kunjungan'];
+	$rs_kunjungan = $row_kunj['rs_kunjungan'];
+	$alamat_kunjungan = $row_kunj['alamat_kunjungan'];
+	$kota_kunjungan = $row_kunj['kota_kunjungan'];
+
+
+
+	// 	foreach ($pk_mod as $pk_mod1) {
+	// $pk_mod1 = implode("','", $pk_mod1)
+	$tdate = date("m");
+	if ($tdate == 01 or $tdate == 02 or $tdate == 03) {
+		$dt = 'I';
+	} elseif ($tdate == 04 or $tdate == 05 or $tdate == 06) {
+		$dt = 'II';
+	} elseif ($tdate == 07 or $tdate == 08 or $tdate == 09) {
+		$dt = 'III';
+	} else {
+		$dt = 'IV';
+	}
+
+	
+	// $count = $pnwrn['count'];
+
+
+
+	$pk_mod = $pnwrn['pk_mod'];
+
+	foreach ($pk_mod as $pk_mod1) {
+
+		$total = $pnwrn['total'];
+
+		$q = mysqli_query($conn, 'SELECT MAX(pk_penawaran) as user_id from sales_penawaran');
+		$row = mysqli_fetch_assoc($q);
+		$ai = $row['user_id'] + 1;
+
+		$qz = mysqli_query($conn, 'SELECT MAX(pk) as user_id from sales_funnel');
+		$rowz = mysqli_fetch_assoc($qz);
+		$aiz = $rowz['user_id'] + 1;
+
+		$x = mysqli_query($conn, 'SELECT MAX(no_penawaran) as no_pen from sales_penawaran');
+		$rowx = mysqli_fetch_assoc($x);
+		$aix = $rowx['no_pen'];
+		$nourut = substr($aix, 2, 4);
+		$nourut++;
+		$username = $pnwrn['username'];
+		$nopen = sprintf("%04s", $nourut);
+		$referensi = $pnwrn['referensi'];
+		$no_penawaran = 'Q-' . $nopen . '/IPI/' . '/' . $username . '/' . $bln . '/' . $thn;
+
+
+
+
+
+
+		$mod = mysqli_query($conn, "SELECT * FROM sales_modality WHERE pk_mod IN ('" . $pk_mod1 . "') ");
+		$row_mod = mysqli_fetch_assoc($mod);
+		$nama_mod = $row_mod['nama_mod'];
+		$merk_mod = $row_mod['merk_mod'];
+		$model_mod = $row_mod['model_mod'];
+		$spek_mod = $row_mod['spek_mod'];
+		$harga_mod = $row_mod['harga_mod'];
+
+
+
+
+
+
+
+
+
+		$query = "INSERT INTO sales_penawaran(pk_penawaran, no_penawaran, pk_cust_penawaran, rs_penawaran, alamat_penawaran,kota_penawaran, nama_cust_penawaran, pk_mod_penawaran, nama_mod_penawaran, model_penawaran, merk_penawaran, spek_penawaran, harga_penawaran, budget_penawaran, qty, tgl_penawaran, status, username, referensi_penawaran ) VALUES ('$ai','$no_penawaran','$pk_kunjungan','$rs_kunjungan','$alamat_kunjungan','$kota_kunjungan','$nama_kunjungan_penawaran','$pk_mod1','$nama_mod','$model_mod','$merk_mod','$spek_mod','$harga_penawaran', '$budget','$qty',NOW(),'30%','$username', '$referensi')";
+		mysqli_query($conn, $query);
+
+		$query1 = "INSERT INTO sales_funnel(pk, penawaran_fk, customer_fk, rs_funnel, kota_funnel, no_penawaran,  pk_mod_funnel, nama_mod_funnel, model_funnel, qty_funnel, harga_funnel, month_funnel,  budget_funnel, buy_funnel, status_funnel, start_funnel, username, referensi_funnel, buy1) 
+		VALUES ('$aiz', '$ai', '$pk_kunjungan', '$rs_kunjungan', '$kota_kunjungan', '$no_penawaran', '$pk_mod1', '$nama_mod', '$model_mod', '$qty', '$harga_penawaran', '$dt', '$budget', '30%', 'On Progress', NOW(), '$username', '$referensi', '30%')";
+
+		mysqli_query($conn, $query1);
+	}
+
+
+
+	return mysqli_affected_rows($conn);
+}
+
+function penawaran1($pnwrn)
+{
+	global $conn;
+
+
+
+
+	// $harga_penawaran = $pnwrn['harga_penawaran'];
+	// $qty = $pnwrn['qty'];
+	$budget = $pnwrn['budget_funnel'];
+
+
+
+	$array_bln = array(1 => "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII");
+	$bln = $array_bln[Date('n')];
+
+
+
+
+	$thn = Date('Y');
+
+
+	$pk_kunjungan = $pnwrn['pk_kunjungan'];
+	$kunjungan = mysqli_query($conn, "SELECT * FROM sales_kunjungan WHERE pk_kunjungan = '$pk_kunjungan' ");
+	$row_kunj = mysqli_fetch_assoc($kunjungan);
+	$nama_kunjungan_penawaran = $row_kunj['nama_kunjungan'];
+	$rs_kunjungan = $row_kunj['rs_kunjungan'];
+	$alamat_kunjungan = $row_kunj['alamat_kunjungan'];
+	$kota_kunjungan = $row_kunj['kota_kunjungan'];
+
+
+
+	// 	foreach ($pk_mod as $pk_mod1) {
+	// $pk_mod1 = implode("','", $pk_mod1)
+	$tdate = date("m");
+	if ($tdate == 01 or $tdate == 02 or $tdate == 03) {
+		$dt = 'I';
+	} elseif ($tdate == 04 or $tdate == 05 or $tdate == 06) {
+		$dt = 'II';
+	} elseif ($tdate == 07 or $tdate == 08 or $tdate == 09) {
+		$dt = 'III';
+	} else {
+		$dt = 'IV';
+	}
+
+	// $count = $pnwrn['count'];
+	$total = $pnwrn['total'];
+
+
+	$pk_mod = $pnwrn['pk_mod'];
+
+	foreach ($pk_mod as $pk_mod1) {
+
+		$mod = mysqli_query($conn, "SELECT * FROM sales_modality WHERE pk_mod IN ('" . $pk_mod1 . "') ");
+		$row_mod = mysqli_fetch_assoc($mod);
+		$nama_mod = $row_mod['nama_mod'];
+		$merk_mod = $row_mod['merk_mod'];
+		$model_mod = $row_mod['model_mod'];
+		$spek_mod = $row_mod['spek_mod'];
+		$harga_mod = $row_mod['harga_mod'];
+		$harga_penawaran = $pnwrn['harga_penawaran'];
+		$qty = $pnwrn['qty'];
+
+
+		$q = mysqli_query($conn, 'SELECT MAX(pk_penawaran) as user_id from sales_penawaran');
+		$row = mysqli_fetch_assoc($q);
+		$ai = $row['user_id'] + 1;
+
+		$qz = mysqli_query($conn, 'SELECT MAX(pk) as user_id from sales_funnel');
+		$rowz = mysqli_fetch_assoc($qz);
+		$aiz = $rowz['user_id'] + 1;
+
+		$x = mysqli_query($conn, 'SELECT MAX(no_penawaran) as no_pen from sales_penawaran');
+		$rowx = mysqli_fetch_assoc($x);
+		$aix = $rowx['no_pen'];
+		$nourut = substr($aix, 2, 4);
+		$nourut++;
+		$username = $pnwrn['username'];
+		$nopen = sprintf("%04s", $nourut);
+		$referensi = $pnwrn['referensi'];
+		$no_penawaran = 'Q-' . $nopen . '/IPI/' . '/' . $username . '/' . $bln . '/' . $thn;
+
+
+		$query = "INSERT INTO sales_penawaran(pk_penawaran, no_penawaran, pk_cust_penawaran, rs_penawaran, alamat_penawaran,kota_penawaran, nama_cust_penawaran, pk_mod_penawaran, nama_mod_penawaran, model_penawaran, merk_penawaran, spek_penawaran, harga_penawaran, budget_penawaran, qty, tgl_penawaran, status, username, referensi_penawaran ) VALUES ('$ai','$no_penawaran','$pk_kunjungan','$rs_kunjungan','$alamat_kunjungan','$kota_kunjungan','$nama_kunjungan_penawaran','$pk_mod1','$nama_mod','$model_mod','$merk_mod','$spek_mod','$harga_penawaran', '$budget','$qty',NOW(),'30%','$username', '$referensi')";
+		mysqli_query($conn, $query);
+
+		$query1 = "INSERT INTO sales_funnel(pk, penawaran_fk, customer_fk, rs_funnel, kota_funnel, no_penawaran,  pk_mod_funnel, nama_mod_funnel, model_funnel, qty_funnel, harga_funnel, month_funnel,  budget_funnel, buy_funnel, status_funnel, start_funnel, username, referensi_funnel, buy1) 
+		VALUES ('$aiz', '$ai', '$pk_kunjungan', '$rs_kunjungan', '$kota_kunjungan', '$no_penawaran', '$pk_mod1', '$nama_mod', '$model_mod', '$qty', '$harga_penawaran', '$dt', '$budget', '30%', 'On Progress', NOW(), '$username', '$referensi', '30%')";
+
+		mysqli_query($conn, $query1);
+	}
+
+
+
+	return mysqli_affected_rows($conn);
+}
+
+function editpenawaran($editpnwrn)
+{
+	global $conn;
+
+	$q = mysqli_query($conn, 'SELECT MAX(pk_penawaran) as user_id from sales_penawaran');
+	$row = mysqli_fetch_assoc($q);
+	$ai = $row['user_id'] + 1;
+
+	$qz = mysqli_query($conn, 'SELECT MAX(pk) as user_id from sales_funnel');
+	$rowz = mysqli_fetch_assoc($qz);
+	$aiz = $rowz['user_id'] + 1;
+
+	$x = mysqli_query($conn, 'SELECT MAX(no_penawaran) as no_pen from sales_penawaran');
+	$rowx = mysqli_fetch_assoc($x);
+	$aix = $rowx['no_pen'];
+	$nourut = substr($aix, 2, 4);
+	$nourut++;
+	$username = $editpnwrn['username'];
+	$nopen = sprintf("%04s", $nourut);
+	$referensi = $editpnwrn['referensi'];
+	$budget = $editpnwrn['budget_funnel'];
+
+
+	$array_bln = array(1 => "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII");
+	$bln = $array_bln[Date('n')];
+	$thn = Date('Y');
+	$no_penawaran = 'Q-' . $nopen . '/IPI/' . '/' . $username . '/' . $bln . '/' . $thn;
+
+	$pk_kunjungan = $editpnwrn['pk_kunjungan'];
+	$kunjungan = mysqli_query($conn, "SELECT * FROM sales_kunjungan WHERE pk_kunjungan = '$pk_kunjungan' ");
+	$row_kunj = mysqli_fetch_assoc($kunjungan);
+	// $nama_kunjungan_penawaran = $row_kunj['nama_kunjungan'];
+	$rs_kunjungan = $row_kunj['rs_kunjungan'];
+
+	// $alamat_kunjungan = $row_kunj['alamat_kunjungan'];
+	// $kota_kunjungan = $row_kunj['kota_kunjungan'];
+
+	$pk_mod = $editpnwrn['pk_mod'];
+	$mod = mysqli_query($conn, "SELECT * FROM sales_modality WHERE pk_mod = '$pk_mod' ");
+	$row_mod = mysqli_fetch_assoc($mod);
+	$nama_mod = $row_mod['nama_mod'];
+
+	// $merk_mod = $row_mod['merk_mod'];
+	// $model_mod = $row_mod['model_mod'];
+	// $spek_mod = $row_mod['spek_mod'];
+	$harga_mod = $row_mod['harga_mod'];
+
+	$qty = $editpnwrn['qty'];
+	$tgl_penawaran = $editpnwrn['tgl_penawaran'];
+	$pnwrn_id = $editpnwrn['no_penawaran'];
+	$harga_penawaran = $editpnwrn['harga_penawaran'];
+
+	$disc = $harga_mod - $harga_penawaran;
+	$harga_penawaran2 = ($disc / $harga_mod) * 100;
+
+	if ($harga_penawaran2 > 50) {
+		echo "<script>alert('discount > 50%!');
+			  document.location.href= 'view_penawaran.php';
+			  </script>";
+
+		return false;
+	} else {
+
+		$query = "UPDATE sales_penawaran SET
+	rs_penawaran = '$rs_kunjungan',
+	nama_mod_penawaran = '$nama_mod',
+	qty = '$qty',
+	harga_penawaran = '$harga_penawaran',
+	budget_penawaran = '$budget',
+	tgl_penawaran = NOW(),
+	referensi_penawaran = '$referensi'
+	WHERE no_penawaran = '$pnwrn_id'
+	";
+		mysqli_query($conn, $query);
+
+		$query1 = "UPDATE sales_funnel SET
+	rs_funnel = '$rs_kunjungan',
+	nama_mod_funnel = '$nama_mod',
+	qty_funnel = '$qty',
+	harga_funnel = '$harga_penawaran',
+	budget_funnel = '$budget',
+	start_funnel = NOW(),
+	referensi_funnel = '$referensi'
+	WHERE no_penawaran = '$pnwrn_id'
+	";
+		mysqli_query($conn, $query1);
+
+
+
+
+
+		return mysqli_affected_rows($conn);
+	}
+}
+
+function uploads($upload)
+{
+
+	global $conn;
+
+	$pnwrn_id = $upload['no_penawaran'];
+
+	$gambar = upload();
+	if (!$gambar) {
+		return false;
+	}
+
+	$tgl_upload = $upload['tgl_upload'];
+
+	$query = "UPDATE sales_penawaran SET
+	gambar = '$gambar',
+	tgl_upload = NOW()
+	WHERE no_penawaran = '$pnwrn_id'
+	";
+
+	mysqli_query($conn, $query);
+	return mysqli_affected_rows($conn);
+}
+
+function approve($setuju)
+{
+	global $conn;
+
+	$no_penawaran = $setuju['no_penawaran'];
+	$username = $setuju['username'];
+	$approved = 'approved';
+
+
+	$qz = mysqli_query($conn, 'SELECT MAX(pk) as user_id from sales_funnel');
+	$rowz = mysqli_fetch_assoc($qz);
+	$aiz = $rowz['user_id'] + 1;
+
+	$q = mysqli_query($conn, "SELECT * FROM sales_penawaran WHERE no_penawaran = '$no_penawaran' ");
+	$row = mysqli_fetch_assoc($q);
+	$pk_penawaran = $row['pk_penawaran'];
+	$pk_cust_penawaran = $row['pk_cust_penawaran'];
+	$rs_penawaran = $row['rs_penawaran'];
+	$kota_penawaran = $row['kota_penawaran'];
+	$no_penawaran = $row['no_penawaran'];
+	$pk_mod_penawaran = $row['pk_mod_penawaran'];
+	$nama_mod_penawaran = $row['nama_mod_penawaran'];
+	$model_penawaran = $row['model_penawaran'];
+	$qty = $row['qty'];
+	$harga_penawaran = $row['harga_penawaran'];
+	$status = $row['status'];
+	// $approve = $setuju['approve'];
+
+	$query = "UPDATE sales_penawaran SET
+    approve = '$approved'
+    WHERE no_penawaran = '$no_penawaran'
+	";
+
+	mysqli_query($conn, $query);
+
+
+	// $no_targeting = $setuju['no_targeting'];
+	// $q1 = mysqli_query($conn, "SELECT * FROM sales_targeting WHERE no_targeting = '$no_targeting' ");
+	// $row1 = mysqli_fetch_assoc($q1);
+	// $no_targeting = $row1['no_targeting'];
+
+
+
+
+
+	// $query1 = "INSERT INTO sales_funnel(pk, penawaran_fk, customer_fk, rs_funnel, kota_funnel, no_penawaran,  pk_mod_funnel, nama_mod_funnel, model_funnel, qty_funnel, harga_funnel, month_funnel,  budget_funnel, buy_funnel, status_funnel, start_funnel, end_funnel, username, approve ) 
+	// 	VALUES ('$aiz', '$pk_penawaran', '$pk_cust_penawaran', '$rs_penawaran', '$kota_penawaran', '$no_penawaran',
+	// 	'$pk_mod_penawaran', '$nama_mod_penawaran', '$model_penawaran', '$qty', '$harga_penawaran', 'month', 'budget', '$status', 'On Progress', NOW(), '', '$username', '$approve')";
+
+	$query1 = "UPDATE sales_funnel SET
+	approve = '$approved' WHERE no_penawaran = '$no_penawaran'
+	";
+
+	mysqli_query($conn, $query1);
+
+	// approve targeting
+	// $query11 = "UPDATE sales_targeting SET
+	// approve = '$approved'
+	// WHERE no_targeting = '$no_targeting'
+	// ";
+
+	// mysqli_query($conn, $query11);
+
+	// $a = mysqli_query($conn, "SELECT * FROM sales_modality WHERE pk_mod = '$pk_mod_penawaran' ");
+	// $row = mysqli_fetch_assoc($a);
+	// $stock_mod = $row['stock_mod'];
+
+	// $hasil = $stock_mod - $qty; 
+
+	// $query2 = "UPDATE sales_modality SET stock_mod = '$hasil' WHERE pk_mod = '$pk_mod_penawaran' ";
+
+	// mysqli_query($conn, $query2);
+
+
+
+	return mysqli_affected_rows($conn);
+}
+
+function approve2($setuju2)
+{
+	global $conn;
+
+	$pk = $setuju2['pk'];
+	$no_penawaran = $setuju2['no_penawaran'];
+	$username = $setuju2['username'];
+	$approved = 'approved';
+	// $approved2 = $setuju2['approve2'];
+
+
+	$qz = mysqli_query($conn, 'SELECT MAX(pk) as user_id from sales_funnel');
+	$rowz = mysqli_fetch_assoc($qz);
+	$aiz = $rowz['user_id'] + 1;
+
+	$q = mysqli_query($conn, "SELECT * FROM sales_penawaran WHERE no_penawaran = '$no_penawaran' ");
+	$row = mysqli_fetch_assoc($q);
+	$pk_penawaran = $row['pk_penawaran'];
+	$pk_cust_penawaran = $row['pk_cust_penawaran'];
+	$rs_penawaran = $row['rs_penawaran'];
+	$kota_penawaran = $row['kota_penawaran'];
+	$no_penawaran = $row['no_penawaran'];
+	$pk_mod_penawaran = $row['pk_mod_penawaran'];
+	$nama_mod_penawaran = $row['nama_mod_penawaran'];
+	$model_penawaran = $row['model_penawaran'];
+	$qty = $row['qty'];
+	$harga_penawaran = $row['harga_penawaran'];
+	$status = $row['status'];
+
+
+
+	// $no_targeting = $setuju2['no_targeting'];
+	// $q1 = mysqli_query($conn, "SELECT * FROM sales_targeting WHERE no_targeting = '$no_targeting' ");
+	// $row1 = mysqli_fetch_assoc($q1);
+	// $no_targeting = $row1['no_targeting'];
+
+	$query = "UPDATE sales_funnel SET
+	approve2 = '$approved' 
+	WHERE no_penawaran = '$no_penawaran'";
+	mysqli_query($conn, $query);
+
+
+
+	$result = mysqli_query($conn, "SELECT * FROM sales_funnel WHERE pk = '$pk'");
+	$row = mysqli_fetch_assoc($result);
+	$rs_funnel = $row['rs_funnel'];
+	$kota_funnel = $row['kota_funnel'];
+	$no_penawaran = $row['no_penawaran'];
+	$pk_mod_funnel = $row['pk_mod_funnel'];
+	$nama_mod_funnel = $row['nama_mod_funnel'];
+	$model_funnel = $row['model_funnel'];
+	$qty_funnel = $row['qty_funnel'];
+	$harga_funnel = $row['harga_funnel'];
+	$harga_po = $row['harga_po'];
+	$username = $row['username'];
+	$total_harga = $qty_funnel * $harga_funnel;
+	$q = mysqli_query($conn, 'SELECT MAX(pk) as user_id from sales_targeting');
+	$row = mysqli_fetch_assoc($q);
+	$ai = $row['user_id'] + 1;
+	$a = mysqli_query($conn, "SELECT * FROM sales_modality WHERE pk_mod = '$pk_mod_funnel' ");
+	$row = mysqli_fetch_assoc($a);
+	$stock_mod = $row['stock_mod'];
+	$harga_mod = $row['harga_mod'];
+
+
+
+	$hasil = $stock_mod - $qty_funnel;
+
+	$query1 = "INSERT INTO sales_targeting(pk, funnel_fk, rs_targeting, kota_targeting, no_targeting, pk_mod_targeting, nama_mod_targeting, model_targeting, qty_targeting, harga_penawaran_targeting, harga_po_targeting, username, approve)
+			VALUES ('$ai', '$pk', '$rs_funnel', '$kota_funnel', '$no_penawaran', '$pk_mod_funnel', '$nama_mod_funnel', '$model_funnel', '$qty_funnel', '$total_harga', '$harga_po', '$username', 'approved')";
+
+	mysqli_query($conn, $query1);
+
+	$query2 = "UPDATE sales_modality SET stock_mod = '$hasil' WHERE pk_mod = '$pk_mod_funnel' ";
+
+	mysqli_query($conn, $query2);
+
+
+	return mysqli_affected_rows($conn);
+}
+
+
+function reject($tolak)
+{
+	global $conn;
+
+	$no_penawaran = $tolak['no_penawaran'];
+	$username = $tolak['username'];
+	$rejected = 'rejected';
+
+
+	// $approve = $setuju['approve'];
+	$query = "UPDATE sales_penawaran SET
+    approve = '$rejected'
+    WHERE no_penawaran = '$no_penawaran'
+	";
+
+	mysqli_query($conn, $query);
+
+	// $query1 = "INSERT INTO sales_funnel(pk, penawaran_fk, customer_fk, rs_funnel, kota_funnel, no_penawaran,  pk_mod_funnel, nama_mod_funnel, model_funnel, qty_funnel, harga_funnel, month_funnel,  budget_funnel, buy_funnel, status_funnel, start_funnel, end_funnel, username, approve) 
+	// 	VALUES ('$aiz', '$pk_penawaran', '$pk_cust_penawaran', '$rs_penawaran', '$kota_penawaran', '$no_penawaran',
+	// 	'$pk_mod_penawaran', '$nama_mod_penawaran', '$model_penawaran', '$qty', '$harga_penawaran', 'month', 'budget', 'On Progress', '$rejected', NOW(), '', '$username', '$approve')";
+
+	$query1 = "UPDATE sales_funnel SET
+	approve = '$rejected' 
+	WHERE no_penawaran = '$no_penawaran'
+	";
+
+	mysqli_query($conn, $query1);
+
+	return mysqli_affected_rows($conn);
+}
+function reject2($tolak2)
+{
+	global $conn;
+
+	$pk = $tolak2['pk'];
+	$no_penawaran = $tolak2['no_penawaran'];
+	$username = $tolak2['username'];
+	$rejected = 'rejected';
+	// $approved2 = $tolak2['approve2'];
+
+
+	$qz = mysqli_query($conn, 'SELECT MAX(pk) as user_id from sales_funnel');
+	$rowz = mysqli_fetch_assoc($qz);
+	$aiz = $rowz['user_id'] + 1;
+
+	$q = mysqli_query($conn, "SELECT * FROM sales_penawaran WHERE no_penawaran = '$no_penawaran' ");
+	$row = mysqli_fetch_assoc($q);
+	$pk_penawaran = $row['pk_penawaran'];
+	$pk_cust_penawaran = $row['pk_cust_penawaran'];
+	$rs_penawaran = $row['rs_penawaran'];
+	$kota_penawaran = $row['kota_penawaran'];
+	$no_penawaran = $row['no_penawaran'];
+	$pk_mod_penawaran = $row['pk_mod_penawaran'];
+	$nama_mod_penawaran = $row['nama_mod_penawaran'];
+	$model_penawaran = $row['model_penawaran'];
+	$qty = $row['qty'];
+	$harga_penawaran = $row['harga_penawaran'];
+	$status = $row['status'];
+
+
+
+	// $no_targeting = $tolak2['no_targeting'];
+	// $q1 = mysqli_query($conn, "SELECT * FROM sales_targeting WHERE no_targeting = '$no_targeting' ");
+	// $row1 = mysqli_fetch_assoc($q1);
+	// $no_targeting = $row1['no_targeting'];
+
+	$query = "UPDATE sales_funnel SET
+	approve2 = '$rejected' 
+	WHERE no_penawaran = '$no_penawaran'";
+	mysqli_query($conn, $query);
+
+
+
+	$result = mysqli_query($conn, "SELECT * FROM sales_funnel WHERE pk = '$pk'");
+	$row = mysqli_fetch_assoc($result);
+	$rs_funnel = $row['rs_funnel'];
+	$kota_funnel = $row['kota_funnel'];
+	$no_penawaran = $row['no_penawaran'];
+	$pk_mod_funnel = $row['pk_mod_funnel'];
+	$nama_mod_funnel = $row['nama_mod_funnel'];
+	$model_funnel = $row['model_funnel'];
+	$qty_funnel = $row['qty_funnel'];
+	$harga_funnel = $row['harga_funnel'];
+	$harga_po = $row['harga_po'];
+	$username = $row['username'];
+	$total_harga = $qty_funnel * $harga_funnel;
+	$q = mysqli_query($conn, 'SELECT MAX(pk) as user_id from sales_targeting');
+	$row = mysqli_fetch_assoc($q);
+	$ai = $row['user_id'] + 1;
+	$a = mysqli_query($conn, "SELECT * FROM sales_modality WHERE pk_mod = '$pk_mod_funnel' ");
+	$row = mysqli_fetch_assoc($a);
+	$stock_mod = $row['stock_mod'];
+	$harga_mod = $row['harga_mod'];
+
+
+
+
+
+	$query1 = "INSERT INTO sales_targeting(pk, funnel_fk, rs_targeting, kota_targeting, no_targeting, pk_mod_targeting, nama_mod_targeting, model_targeting, qty_targeting, harga_penawaran_targeting, harga_po_targeting, username, approve)
+			VALUES ('$ai', '$pk', '$rs_funnel', '$kota_funnel', '$no_penawaran', '$pk_mod_funnel', '$nama_mod_funnel', '$model_funnel', '$qty_funnel', '$total_harga', '$harga_po', '$username', 'rejected')";
+
+	mysqli_query($conn, $query1);
+
+
+	return mysqli_affected_rows($conn);
+}
+function upload()
+{
+	$namaFile = $_FILES['gambar']['name'];
+	$ukuranFile = $_FILES['gambar']['size'];
+	$error = $_FILES['gambar']['error'];
+	$tmpName = $_FILES['gambar']['tmp_name'];
+
+
+
+	// cek apakah tidak ada gambar yang di upload
+
+	if ($error === 4) {
+		echo "<script>
+	    alert('upload bukti PO!');
+	    </script>";
+		return false;
+	}
+
+	// cek apakah yang di upload adalah gambar
+	$ekstensiGambarValid = ['pdf', 'jpg', 'jpeg', 'png'];
+	$ekstensiGambar = explode('.', $namaFile);
+	$ekstensiGambar = strtolower(end($ekstensiGambar));
+
+
+
+	if (!in_array($ekstensiGambar, $ekstensiGambarValid)) {
+
+		echo "<script>
+        alert('Silahkan upload file dengan format PDF');
+        </script>";
+		return false;
+	}
+
+	// cek jika ukurannya terlalu besar
+	// $ekstensiFile = [' > 441500000 '];
+	// if (in_array($ukuranFile, $ekstensiFile)) {
+	// 	echo "<script>
+	//         alert('ukuran gambar terlalu besar !');
+	//     </script>";
+	// 	return false;
+	// }
+
+	// lolos pengecekan, gambar siap diupload
+	// generate nama gambar baru
+
+
+	$namaFileBaru = uniqid();
+	$namaFileBaru .= '.';
+	$namaFileBaru .= $ekstensiGambar;
+
+	// move_uploaded_file($tmpName, '/intimedika/pdf/' . $namaFileBaru);
+
+	$move = move_uploaded_file($_FILES['gambar']['tmp_name'], $_SERVER['DOCUMENT_ROOT'] . "/intimedika/pdf/" . $namaFileBaru);
+
+	if (!$move) {
+		die('File didnt upload');
+	} else {
+
+		echo "Upload Complete!";
+	}
+
+
+	return $namaFileBaru;
+}
+
+function funnel($fnnl)
+{
+	global $conn;
+	$pk = $fnnl['pk'];
+	@$buy1 = $fnnl['buy1'];
+	@$buy2 = $fnnl['buy2'];
+	@$buy3 = $fnnl['buy3'];
+	@$buy4 = $fnnl['buy4'];
+	@$buy5 = $fnnl['buy5'];
+	@$buy6 = $fnnl['buy6'];
+
+	// $q = mysqli_query($conn, 'SELECT MAX(pk) as user_id from sales_presentasi');
+	// $row = mysqli_fetch_assoc($q);
+	// $ai = $row['user_id'] + 1;
+	$tglpresentasi = $fnnl['date_presentasi'];
+
+	$harga_po = $fnnl['harga_po'];
+	$status1 = $fnnl['status1'];
+	if ($buy6 == '100%') {
+		// $status = 'Cold';
+		$buy = '100%';
+		$status = 'WIN';
+		$gambar = upload();
+		if (!$gambar) {
+			return false;
+		}
+	} elseif ($buy5 == '90%') {
+		// $status = 'On Progress';
+		$gambar = '';
+		$buy = '90%';
+		$status = $fnnl['status'];
+
+		$query90 = "UPDATE sales_funnel SET
+		now90 = NOW()
+		WHERE pk = '$pk'
+		";
+		mysqli_query($conn, $query90);
+	} elseif ($buy4 == '85%') {
+		// $status = 'On Progress';
+		$gambar = '';
+		$buy = '85%';
+		$status = $fnnl['status'];
+
+		$query85 = "UPDATE sales_funnel SET
+		now85 = NOW()
+		WHERE pk = '$pk'
+		";
+		mysqli_query($conn, $query85);
+	} elseif ($buy3 == '70%') {
+		// $status = 'Hot';
+		$gambar = '';
+		$status = $fnnl['status'];
+		$buy = '70%';
+
+		$query70 = "UPDATE sales_funnel SET
+		now70 = NOW(),
+		tgl_presentasi = NULL
+		WHERE pk = '$pk'
+		";
+		mysqli_query($conn, $query70);
+	} elseif ($buy2 == '50%') {
+		// $status = 'Hold';
+		$gambar = '';
+		$buy = '50%';
+		$status = $fnnl['status'];
+
+		$query50 = "UPDATE sales_funnel SET
+		now50 = NOW(),
+		tgl_presentasi = '$tglpresentasi',
+		now_presentasi = '$tglpresentasi'
+		WHERE pk = '$pk'
+		";
+		mysqli_query($conn, $query50);
+	} else {
+		// $status = 'PO';
+		$gambar = '';
+		$buy = '30%';
+		$status = $fnnl['status'];
+
+		$query30 = "UPDATE sales_funnel SET
+		now30 = NOW()
+		WHERE pk = '$pk'
+		";
+		mysqli_query($conn, $query30);
+	}
+
+
+
+	if ($buy == '100%') {
+		$result = mysqli_query($conn, "SELECT * FROM sales_funnel WHERE pk = '$pk'");
+		$row = mysqli_fetch_assoc($result);
+		$rs_funnel = $row['rs_funnel'];
+		$kota_funnel = $row['kota_funnel'];
+		$no_penawaran = $row['no_penawaran'];
+		$pk_mod_funnel = $row['pk_mod_funnel'];
+		$nama_mod_funnel = $row['nama_mod_funnel'];
+		$model_funnel = $row['model_funnel'];
+		$qty_funnel = $row['qty_funnel'];
+		$harga_funnel = $row['harga_funnel'];
+		$username = $row['username'];
+		$total_harga = $qty_funnel * $harga_funnel;
+		$q = mysqli_query($conn, 'SELECT MAX(pk) as user_id from sales_targeting');
+		$row = mysqli_fetch_assoc($q);
+		$ai = $row['user_id'] + 1;
+		$a = mysqli_query($conn, "SELECT * FROM sales_modality WHERE pk_mod = '$pk_mod_funnel' ");
+		$row = mysqli_fetch_assoc($a);
+		$stock_mod = $row['stock_mod'];
+		$harga_mod = $row['harga_mod'];
+
+		if ($stock_mod < $qty_funnel) {
+			echo "<script>alert('stock modality tidak tersedia, silahkan hubungi admin.');
+		  document.location.href= 'view_funnel.php';
+		  </script>";
+
+			return false;
+		}
+		// } else {
+		// 	$hasil = $stock_mod - $qty_funnel;
+		// }
+
+		$disc = ($harga_mod * $qty_funnel) - $harga_po;
+		$harga_po2 = ($disc / ($harga_mod * $qty_funnel)) * 100;
+
+		if ($harga_po2 > 50) {
+			echo "<script>alert('discount > 50%!');
+				  document.location.href= 'edit_funnel.php?no_penawaran=$no_penawaran';
+				  </script>";
+
+			return false;
+		} else {
+			$query = "UPDATE sales_funnel SET 
+			buy_funnel = '$buy',
+			status_funnel = '$status',
+			status2_funnel = '$status1',
+			gambar = '$gambar',
+			harga_po = '$harga_po',
+			tgl_upload = NOW(),
+			buy1 = '$buy1',
+			buy2 = '$buy2',
+			buy3 = '$buy3',
+			buy4 = '$buy4',
+			buy5 = '$buy5',
+			buy6 = '$buy6'
+			WHERE pk = '$pk'
+		";
+			mysqli_query($conn, $query);
+			// 		$query1 = "INSERT INTO sales_targeting(pk, funnel_fk, rs_targeting, kota_targeting, no_targeting, pk_mod_targeting, nama_mod_targeting, model_targeting, qty_targeting, harga_penawaran_targeting, harga_po_targeting, username)
+			// VALUES ('$ai', '$pk', '$rs_funnel', '$kota_funnel', '$no_penawaran', '$pk_mod_funnel', '$nama_mod_funnel', '$model_funnel', '$qty_funnel', '$total_harga', '$harga_po', '$username')";
+
+			// 		mysqli_query($conn, $query1);
+
+			// 		$query2 = "UPDATE sales_modality SET stock_mod = '$hasil' WHERE pk_mod = '$pk_mod_funnel' ";
+
+			// 		mysqli_query($conn, $query2);
+		}
+	} else {
+		$query2 = "UPDATE sales_funnel SET 
+			buy_funnel = '$buy',
+			status_funnel = '$status',
+			status2_funnel = '$status1',
+			gambar = '$gambar',
+			buy1 = '$buy1',
+			buy2 = '$buy2',
+			buy3 = '$buy3',
+			buy4 = '$buy4',
+			buy5 = '$buy5',
+			buy6 = '$buy6'
+			WHERE pk = '$pk'
+		";
+		mysqli_query($conn, $query2);
+	}
+	return mysqli_affected_rows($conn);
+}
+
+
+function registrasi($regis)
+{
+	global $conn;
+
+	// username & password
+	$q = mysqli_query($conn, 'SELECT MAX(log_id) as user_id from inti_login');
+	$row = mysqli_fetch_assoc($q);
+	$ai = $row['user_id'] + 1;
+
+	// data user
+	$q1 = mysqli_query($conn, 'SELECT MAX(pk_user) as user_data from inti_user');
+
+	$row1 = mysqli_fetch_assoc($q1);
+	$ai1 = $row1['user_data'] + 1;
+
+	$username = strtolower(stripslashes($regis["inputUname"]));
+	$password = mysqli_real_escape_string($conn, $regis["inputPassword4"]);
+	$position = strtolower($regis["inputPosition"]);
+	$email = $regis["inputEmail4"];
+	$name = $regis["inputNama"];
+	$address = $regis["inputAddress"];
+	$city = $regis["inputCity"];
+	$state = $regis["inputState"];
+	$zip = $regis["inputZip"];
+	$targett = $regis["targett"];
+
+
+
+	// enkripsi password
+	$password = password_hash($password, PASSWORD_DEFAULT);
+
+	// tambahkan user kedalam database
+
+
+
+	$query = "INSERT INTO inti_login(log_id, fk_user, username, password, level) 
+	VALUES('$ai','$ai1', '$username', '$password', '$position')";
+
+	mysqli_query($conn, $query);
+
+	$query1 = "INSERT INTO inti_user(pk_user, username, name, email, address, city, state, zip, targett, level)
+	VALUES ('$ai1', '$username', '$name', '$email', '$address', '$city', '$state', '$zip', '', '$position')";
+
+	mysqli_query($conn, $query1);
+
+	return mysqli_affected_rows($conn);
+}
+
+function updtprofile($post_profile)
+{
+	global $conn;
+
+	$username = $post_profile['username'];
+	$target = $post_profile['target'];
+
+	$query = "UPDATE inti_user SET
+	targett = '$target',
+	approve_target = NULL
+	WHERE username = '$username'
+	";
+	mysqli_query($conn, $query);
+
+	return mysqli_affected_rows($conn);
+}
+
+function updtprofile2($post_profile2)
+{
+	global $conn;
+
+	$username = $post_profile2['username'];
+	$email = $post_profile2['email'];
+	$nama = $post_profile2['nama'];
+	$address = $post_profile2['address'];
+	$city = $post_profile2['city'];
+	$state = $post_profile2['state'];
+	$zip = $post_profile2['zip'];
+
+
+	$query = "UPDATE inti_user SET
+	email = '$email',
+	name = '$nama',
+	address = '$address',
+	city = '$city',
+	state = '$state',
+	zip = '$zip'
+	WHERE username = '$username'
+	";
+	mysqli_query($conn, $query);
+
+	return mysqli_affected_rows($conn);
+}
+
+function cancel($post_cncl)
+{
+	global $conn;
+	$pk = $post_cncl['pk'];
+	$status1 = $post_cncl['status1'];
+	$cancel = 'CANCEL';
+	@$buy1 = $post_cncl['buy1'];
+	@$buy2 = $post_cncl['buy2'];
+	@$buy3 = $post_cncl['buy3'];
+	@$buy4 = $post_cncl['buy4'];
+	@$buy5 = $post_cncl['buy5'];
+	@$buy6 = $post_cncl['buy6'];
+	if ($buy5 == '90%') {
+		// $status = 'On Progress';
+		$buy = '90%';
+	} elseif ($buy4 == '85%') {
+		// $status = 'On Progress';
+		$buy = '85%';
+	} elseif ($buy3 == '70%') {
+		// $status = 'Hot';
+		$buy = '70%';
+	} elseif ($buy2 == '50%') {
+		// $status = 'Hold';
+		$buy = '50%';
+	} else {
+		// $status = 'PO';
+		$buy = '30%';
+	}
+
+	$query = "UPDATE sales_funnel SET 
+			  buy_funnel = '$buy',
+			  status_funnel = 'LOSE',
+			  status2_funnel = '$status1',
+		      cancel = '$cancel'
+			  WHERE pk = '$pk'
+	";
+	mysqli_query($conn, $query);
+
+	return mysqli_affected_rows($conn);
+}
+
+function approve_target($post_approve_target)
+{
+	global $conn;
+
+	$username = $post_approve_target['username'];
+
+	$query = "UPDATE inti_user SET
+	approve_target = 'approved'
+	WHERE username = '$username'
+	";
+	mysqli_query($conn, $query);
+
+	return mysqli_affected_rows($conn);
+}
+
+function reject_target($post_approve_target)
+{
+	global $conn;
+
+	$username = $post_approve_target['username'];
+
+	$query = "UPDATE inti_user SET
+	approve_target = 'rejected'
+	WHERE username = '$username'
+	";
+	mysqli_query($conn, $query);
+
+	return mysqli_affected_rows($conn);
+}

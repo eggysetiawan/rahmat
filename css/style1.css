@@ -1,0 +1,92 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+    padding: 0;
+}
+
+body{
+	/*background: linear-gradient(to right, #0d283c, #02121f, #0a2131);*/
+	  background-image:url("../image/bckg.jpg");
+	  /*background-size: cover;*/
+  	  background-attachment: fixed;
+  	  height: 100%;
+
+
+	
+}
+
+body, html{
+    height: 100%;
+}
+
+
+.container-home{
+	/*margin: 30px 0px 0px 0px;*/
+	display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+
+	
+}
+
+
+.head_home{
+	background-color: #fff;
+	border-radius: 5px;
+	border: 3px solid #f1f1f1;
+	opacity: 0.9;
+	padding: 10px;
+	margin: 0px 15px 0px 15px;
+	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .16), 0 2px 10px 0 rgba(0, 0, 0, .12);
+
+}
+
+
+.logoipi{
+	width: 100%;
+	margin:10px 0px;
+	border-bottom: 5px solid #f1f1f1;
+}
+
+.content1{
+	background-color: #f7f7f7;
+	width: auto;
+	height: auto;
+	margin: 30px 0px;
+	padding: 5px;
+}
+
+.content2{
+	background-color: #f7f7f7;
+	width: auto;
+	height: auto;
+	margin: 30px 0px;
+	padding: 5px;
+}
+
+.signin{
+	width: 49.5%;
+	font-size: 2rem;
+    /*padding: 4px 155px 4px 155px;*/
+    background-color: #fffbfb;
+    color: #ee7234;
+}
+
+
+.signup{
+	width: 49.5%;
+	font-size: 2rem;
+    /*padding: 4px 155px 4px 155px;*/
+    background-color: #ee7234;
+    color: aliceblue;
+}
+
+
+.head_home center{
+	color: #ee7234;
+
+}
+
+
+
